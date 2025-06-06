@@ -1,6 +1,19 @@
+from datetime import date
 from registros_ig import app
-from flask import render_template
+from flask import render_template,request,redirect
 from registros_ig.models import *
+
+
+def validateForm(datosFormulario):
+    errores=[]#lista para guardar errores
+    hoy = date.today().isoformat()#capturo laf echa de hoy
+    if datosFormulario["date"] > hoy:
+        errores.append("La fecha no puede ser mayor a la actual")
+    if datosFormulario["concept"] =="":
+        errores.append("El concepto no puede ir vacío")
+    if datosFormulario["quantity"] =="" or float(datosFormulario["quantity"]) == 0.0:
+        errores.append("El precio debe ser distinto a 0 y de vacío")
+    return errores
 
 @app.route("/")
 def index():
@@ -16,7 +29,27 @@ def index():
     """
     return render_template("index.html",data = registros)
 
-@app.route("/new")
+@app.route("/new",methods=["GET","POST"])
 def create():
-    return render_template("create.html")
+    if request.method == "GET":
+        return render_template("create.html", dataForm=None)
+    else:
+        errores = validateForm(request.form)
+        if errores:
+            return render_template("create.html",msgError=errores,dataForm=request.form)
+        else:
+            insert([request.form["date"],request.form["concept"],request.form["quantity"]])
+            return redirect("/")
+        
+@app.route("/delete/<int:id>",methods=["GET","POST"])
+def remove(id):
+    if request.method =="GET":
+        resultado = select_by(id)
+        return render_template("delete.html",data=resultado)
+    else:
+        delete_by(id)
+        return redirect("/")
+    
+    
+
            

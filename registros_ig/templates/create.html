@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% block section %}       
 
-<form>
-      
+<form action="/new" method="POST">      
     <label>Fecha </label>
-    <input type="date" name="date">
+    <input type="date" name="date" value="{{dataForm.date}}">
     <label>Concepto</label>
-    <input type="text"  name="concept" placeholder="Ingrese concepto">
-    <label >Monto</label>
-    <input type="number" name="quantity" placeholder="Ingrese cantidad" step="0.01">
-
+    <input type="text"  name="concept" placeholder="Ingrese concepto" value="{{dataForm.concept}}">
+    <label>Monto</label>
+    <input type="number" name="quantity" placeholder="Ingrese cantidad" step="0.01" value="{{dataForm.quantity}}">
+    
     <button type="submit">Guardar</button>
+    <article>
+        <ul>
+            {% for item in msgError %}
+            <li>{{item}}</li>
+            {% endfor %}
+        </ul>
+    </article>
 </form>
-  {% endblock %} 
+
+{% endblock %} 
