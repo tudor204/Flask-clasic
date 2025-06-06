@@ -41,5 +41,6 @@ def delete_by(id):
     cur.execute(f"DELETE FROM movements WHERE id={id}")
     con.commit()#funcion para validar el registro
     con.close()
-    
+
+
   

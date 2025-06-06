@@ -49,7 +49,18 @@ def remove(id):
     else:
         delete_by(id)
         return redirect("/")
+
+@app.route("/update/<id>",methods=["GET","POST"])
+def edit(id):
+    if request.method == "GET":
+        resultado = edit(id)
+        return render_template("update.html",data=resultado)
+    else:
+        edit(id)
+        return redirect("/")
     
+
+
     
 
            
