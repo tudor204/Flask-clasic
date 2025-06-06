@@ -14,6 +14,9 @@ def index():
         {"id":4,"date":"2025-06-03","concepto":"Gas","quantity":"-25"},
     ]
     """
-
     return render_template("index.html",data = registros)
+
+@app.route("/new")
+def create():
+    return render_template("create.html")
            
