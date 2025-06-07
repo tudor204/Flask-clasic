@@ -50,15 +50,20 @@ def remove(id):
         delete_by(id)
         return redirect("/")
 
-@app.route("/update/<id>",methods=["GET","POST"])
+@app.route("/update/<id>", methods=["GET", "POST"])
 def edit(id):
     if request.method == "GET":
-        resultado = edit(id)
-        return render_template("update.html",data=resultado)
+        resultado = select_by(id)
+        return render_template("update.html", data=resultado)
     else:
-        edit(id)
+        update_by(
+            id,
+            request.form["date"],
+            request.form["concept"],
+            request.form["quantity"]
+        )
         return redirect("/")
-    
+
 
 
     

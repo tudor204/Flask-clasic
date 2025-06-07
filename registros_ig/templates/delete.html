@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
-{% block section %}       
-<h2>Previsualización borrado</h2>
+{% block section %}
+<h2>Eliminar movimiento</h2>
+
+<p>¿Estás seguro que quieres eliminar este movimiento?</p>
+
 <article>
-    <p><strong>Fecha:  </strong>{{data[1]}}</p>
-    <p><strong>concepto:  </strong>{{data[2]}}</p>
-    <p><strong>Monto:  </strong>{{data[3]}}</p>
+  <p><strong>Fecha:</strong> {{ data[1] }}</p>
+  <p><strong>Concepto:</strong> {{ data[2] }}</p>
+  <p><strong>Monto (€):</strong> {{ data[3] }}</p>
 </article>
-<form action="/delete/{{data[0]}}" method="POST">
-<button type="submit" style="background-color: brown;">Borrar</button>
+
+<form action="/delete/{{ data[0] }}" method="POST">
+  <button type="submit" class="contrast">Eliminar</button>
+  <a href="/" role="button" style="margin-left: 1rem;">Cancelar</a>
 </form>
-
-
-
-{% endblock %} 
+{% endblock %}

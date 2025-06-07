@@ -29,7 +29,7 @@ def insert(registroForm):
 def select_by(id):
     con = sqlite3.connect(ORIGIN_DATA)
     cur = con.cursor()
-    res = cur.execute(f"SELECT * from movements id WHERE id={id}")
+    res = cur.execute(f"SELECT * from movements WHERE id={id}")
     
     resultado = res.fetchall()
     con.close()
@@ -42,5 +42,15 @@ def delete_by(id):
     con.commit()#funcion para validar el registro
     con.close()
 
+def update_by(id, date, concept, quantity):
+    con = sqlite3.connect(ORIGIN_DATA)
+    cur = con.cursor()
+    cur.execute("""
+        UPDATE movements
+        SET date = ?, concept = ?, quantity = ?
+        WHERE id = ?
+    """, (date, concept, quantity, id))
+    con.commit()
+    con.close()
 
   

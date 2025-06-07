@@ -1,36 +1,31 @@
 {% extends "base.html" %}
-{% block section %}  
-<h1>Lista de movimientos</h1>         
-<table class="striped">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Concepto</th>
-            <th>Monto</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {%for item in data%}
-        <tr>
-            <td>{{item.date}}</td>
-            <td>{{item.concept}}</td>
-            <td>{{item.quantity}}</td>
-            <td>
-                <a href="/update/{{item.id}}">
-                    <span class="material-symbols-outlined">
-                        edit
-                    </span>
-                </a>
-                <a href="/delete/{{item.id}}"> 
-                    <span class="material-symbols-outlined">
-                        delete
-                        </span>
-                </a>       
-           </td>                 
-           
-        </tr>
-        {% endfor %}
-    </tbody>
-  </table>
-  {% endblock %} 
+
+{% block section %}
+<h2>Movimientos registrados</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Concepto</th>
+      <th>Monto (€)</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mov in data %}
+    <tr>
+      <td>{{ mov['date'] }}</td>
+      <td>{{ mov['concept'] }}</td>
+      <td>{{ mov['quantity'] }}</td>
+      <td>
+        <a href="/update/{{ mov['id'] }}" style="color: var(--color-primario); font-weight: 600;">Editar</a> |
+        <a href="/delete/{{ mov['id'] }}" class="contrast">Eliminar</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4" style="text-align:center; font-style: italic; color: #777;">No hay movimientos registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
