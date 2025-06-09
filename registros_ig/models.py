@@ -1,12 +1,9 @@
-import sqlite3
-from registros_ig import ORIGIN_DATA
+from registros_ig.conexion import Conexion
 
 def select_all():
-    con = sqlite3.connect(ORIGIN_DATA)
-    cur = con.cursor()
-    res = cur.execute("select * from movements;")
-    filas = res.fetchall()
-    columnas = res.description #columnas
+    conectar = Conexion("select * from movements order by date DESC")    
+    filas = conectar.res.fetchall()
+    columnas = conectar.res.description #columnas
     lista_diccionario=[]  
 
     for f in filas:
@@ -16,41 +13,32 @@ def select_all():
             diccionario[c[0]] = f[posicion]
             posicion +=1
         lista_diccionario.append(diccionario)
-    con.close()
+    conectar.con.close()
     return lista_diccionario
    
 def insert(registroForm):
-    con = sqlite3.connect(ORIGIN_DATA)
-    cur = con.cursor()
-    res = cur.execute("insert into movements(date,concept,quantity) values(?,?,?)",registroForm)
-    con.commit()#funcion para validar el registro
-    con.close()
+    conectarInsert = Conexion("insert into movements(date,concept,quantity) values(?,?,?)",registroForm)    
+    conectarInsert.con.commit()#funcion para validar el registro
+    conectarInsert.con.close()
 
 def select_by(id):
-    con = sqlite3.connect(ORIGIN_DATA)
-    cur = con.cursor()
-    res = cur.execute(f"SELECT * from movements WHERE id={id}")
-    
-    resultado = res.fetchall()
-    con.close()
+    conectarSelect = Conexion(f"SELECT * from movements WHERE id={id}")    
+    resultado = conectarSelect.res.fetchall()
+    conectarSelect.con.close()
     return resultado[0]
 
 def delete_by(id):
-    con = sqlite3.connect(ORIGIN_DATA)
-    cur = con.cursor()
-    cur.execute(f"DELETE FROM movements WHERE id={id}")
-    con.commit()#funcion para validar el registro
-    con.close()
+    conectarDelete = Conexion(f"DELETE FROM movements WHERE id={id}")    
+    conectarDelete.con.commit()#funcion para validar el registro
+    conectarDelete.con.close()
 
 def update_by(id, date, concept, quantity):
-    con = sqlite3.connect(ORIGIN_DATA)
-    cur = con.cursor()
-    cur.execute("""
+    conectarUpdate = Conexion("""
         UPDATE movements
         SET date = ?, concept = ?, quantity = ?
         WHERE id = ?
-    """, (date, concept, quantity, id))
-    con.commit()
-    con.close()
+    """, (date, concept, quantity, id))    
+    conectarUpdate.con.commit()
+    conectarUpdate.con.close()
 
   

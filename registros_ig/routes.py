@@ -2,6 +2,7 @@ from datetime import date
 from registros_ig import app
 from flask import render_template,request,redirect
 from registros_ig.models import *
+from registros_ig.forms import MovementsForms
 
 
 def validateForm(datosFormulario):
@@ -31,15 +32,21 @@ def index():
 
 @app.route("/new",methods=["GET","POST"])
 def create():
+
+    form = MovementsForms()
     if request.method == "GET":
-        return render_template("create.html", dataForm=None)
+        return render_template("create.html", dataForm=form)
     else:
-        errores = validateForm(request.form)
-        if errores:
-            return render_template("create.html",msgError=errores,dataForm=request.form)
+       
+        if form.validate_on_submit():
+            insert([request.form["date"],
+                    request.form["concept"],
+                    request.form["quantity"]])            
+            
         else:
-            insert([request.form["date"],request.form["concept"],request.form["quantity"]])
-            return redirect("/")
+            return render_template("create.html",msgError={},dataForm=form)            
+        
+        return redirect("/")
         
 @app.route("/delete/<int:id>",methods=["GET","POST"])
 def remove(id):
